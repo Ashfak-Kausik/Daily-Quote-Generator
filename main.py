@@ -13,6 +13,9 @@ quotes = [
     "Life itself is the most wonderful fairy tale. - Hans Christian Andersen"
     "To live is the rarest thing in the world. Most people exist, that is all. - Oscar Wilde"
     "In three words I can sum up everything I've learned about life: it goes on. - Robert Frost"
+    "Life is really simple, but we insist on making it complicated. - Confucius"
+    "The biggest adventure you can take is to live the life of your dreams. - Oprah Winfrey"
+    "Life is made of ever so many partings welded together. - Charles Dickens"
 ]
 
 quote, author = random.choice(quotes).rsplit(" - ", 1)
