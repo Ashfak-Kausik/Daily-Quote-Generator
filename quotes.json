@@ -1,20 +1,16 @@
-import random
-import json
-
-# Load quotes from JSON file
-with open('quotes.json', 'r', encoding='utf-8') as file:
-    data = json.load(file)
-    quotes = data['quotes']
-
-# Select a random quote
-quote_data = random.choice(quotes)
-quote = quote_data['text']
-author = quote_data['author']
-
-# Display the quote
-print("=" * 50)
-print("📖 DAILY QUOTE")
-print("=" * 50)
-print(f"\"{quote}\"")
-print(f"\n- {author}")
-print("=" * 50)
+{
+  "quotes": [
+    {
+      "text": "The only way to do great work is to love what you do.",
+      "author": "Steve Jobs"
+    },
+    {
+      "text": "Life is what happens when you're busy making other plans.",
+      "author": "John Lennon"
+    },
+    {
+      "text": "The future belongs to those who believe in the beauty of their dreams.",
+      "author": "Eleanor Roosevelt"
+    }
+  ]
+}
