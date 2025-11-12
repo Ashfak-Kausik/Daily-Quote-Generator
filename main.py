@@ -1,11 +1,48 @@
 import random
 import json
+import argparse
 from datetime import datetime
 
 # Load quotes from JSON file
 with open('quotes.json', 'r', encoding='utf-8') as file:
     data = json.load(file)
-    quotes = data['quotes']
+
+# Set up command-line arguments
+parser = argparse.ArgumentParser(description='Daily Quote Generator')
+parser.add_argument('--category', '-c', 
+                    choices=['motivation', 'life', 'wisdom', 'success', 'random'],
+                    default='random',
+                    help='Choose a quote category')
+parser.add_argument('--list', '-l', 
+                    action='store_true',
+                    help='List all available categories')
+
+args = parser.parse_args()
+
+# If user wants to see categories
+if args.list:
+    print("\n📚 Available Categories:")
+    print("=" * 50)
+    for category in data['categories'].keys():
+        count = len(data['categories'][category])
+        print(f"  • {category.capitalize()} ({count} quotes)")
+    print("  • Random (all categories)")
+    print("=" * 50)
+    print("\nUsage: python main.py --category motivation")
+    print("   Or: python main.py -c wisdom")
+    exit()
+
+# Select quotes based on category
+if args.category == 'random':
+    # Get all quotes from all categories
+    all_quotes = []
+    for quotes_list in data['categories'].values():
+        all_quotes.extend(quotes_list)
+    quotes = all_quotes
+    category_name = "Random"
+else:
+    quotes = data['categories'][args.category]
+    category_name = args.category.capitalize()
 
 # Select a random quote
 quote_data = random.choice(quotes)
@@ -14,7 +51,7 @@ author = quote_data['author']
 
 # Display in terminal
 print("=" * 50)
-print("📖 DAILY QUOTE")
+print(f"📖 DAILY QUOTE - {category_name}")
 print("=" * 50)
 print(f"\"{quote}\"")
 print(f"\n- {author}")
@@ -26,7 +63,7 @@ html_content = f"""<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Quote</title>
+    <title>Daily Quote - {category_name}</title>
     <style>
         * {{
             margin: 0;
@@ -56,6 +93,18 @@ html_content = f"""<!DOCTYPE html>
         .icon {{
             font-size: 60px;
             margin-bottom: 30px;
+        }}
+        
+        .category {{
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }}
         
         h1 {{
@@ -119,6 +168,7 @@ html_content = f"""<!DOCTYPE html>
 <body>
     <div class="container">
         <div class="icon">📖</div>
+        <div class="category">{category_name}</div>
         <h1>Daily Quote</h1>
         <div class="quote">{quote}</div>
         <div class="author">— {author}</div>
@@ -132,5 +182,5 @@ html_content = f"""<!DOCTYPE html>
 with open('daily_quote.html', 'w', encoding='utf-8') as html_file:
     html_file.write(html_content)
 
-print("\n✅ HTML file generated: daily_quote.html")
+print(f"\n✅ HTML file generated: daily_quote.html")
 print("Open it in your browser to see your quote!")
